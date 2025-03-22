@@ -48,5 +48,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Allow speech recognition for voice-to-text functionality</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow microphone access for voice-to-text functionality</string>
 </dict>
 </plist>
