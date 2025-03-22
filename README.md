@@ -18,4 +18,9 @@ Each project has its own README with specific setup instructions.
 
 View a demonstration of the application in action:
 
-<video src="screen_record.mp4" width="320" height="640" controls></video>
+![Screen Recording Demo](screen_record.gif)
+
+The animation demonstrates:
+- Voice-to-text functionality in action
+- The reusable GradientBackground component implemented across multiple UI elements (ResultsScreen, RecordingStatus, VoiceRecordingButton)
+- Complete workflow from voice recording to text conversion
