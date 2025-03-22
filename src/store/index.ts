@@ -14,7 +14,8 @@ export const useApiStore = create<ApiState>(set => ({
       set({response, loading: false});
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
         loading: false,
       });
     }
