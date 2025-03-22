@@ -2,6 +2,7 @@ import {ApiResponse, ApiQueryRequest} from '../../types/app';
 
 // Local development API URL - change for production
 const API_BASE_URL = 'http://192.168.11.200:5001/api';
+
 export const sendQuery = async (query: string): Promise<ApiResponse> => {
   try {
     const response = await fetch(`${API_BASE_URL}/query`, {
@@ -14,8 +15,7 @@ export const sendQuery = async (query: string): Promise<ApiResponse> => {
 
     const data = await response.json();
     return data;
-  } catch (error) {
-    console.error('API request failed:', error);
+  } catch (_) {
     return {
       success: false,
       type: 'error',

@@ -21,12 +21,11 @@ export const ActionFooter: React.FC<ActionFooterProps> = ({actions}) => {
 const styles = StyleSheet.create({
   footer: {
     padding: theme.spacing.m,
-    backgroundColor: theme.colors.card,
     borderTopWidth: 1,
     borderTopColor: theme.colors.border,
   },
   button: {
-    backgroundColor: theme.colors.info,
+    backgroundColor: theme.colors.gradientStart,
     borderRadius: theme.borderRadius.medium,
     height: 50,
     justifyContent: 'center',

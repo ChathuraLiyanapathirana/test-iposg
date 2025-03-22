@@ -1,14 +1,14 @@
 import React from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import {Text, StyleSheet, FlatList, View} from 'react-native';
 import {theme} from '../../styles/theme';
 import {ApiResponseCardProps} from '../../types/app';
 
 export const ApiResponseCard: React.FC<ApiResponseCardProps> = ({response}) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.cardTitle}>API Response</Text>
+      <Text style={styles.cardTitle}>Transcription Results</Text>
 
-      <View style={styles.messageContainer}>
+      <View style={[styles.messageContainer]}>
         <Text style={styles.messageText}>{response.data.message}</Text>
       </View>
 
@@ -35,28 +35,33 @@ export const ApiResponseCard: React.FC<ApiResponseCardProps> = ({response}) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: theme.colors.card,
     borderRadius: theme.borderRadius.large,
     padding: theme.spacing.m,
     marginBottom: theme.spacing.m,
-    ...theme.shadows.medium,
+    backgroundColor: theme.colors.card,
+    ...theme.shadows.large,
+    overflow: 'hidden',
   },
   cardTitle: {
-    fontSize: theme.typography.fontSize.large,
+    fontSize: theme.typography.fontSize.xlarge,
     fontWeight: theme.typography.fontWeight.semibold,
-    marginBottom: theme.spacing.m - 4,
+    marginBottom: theme.spacing.m,
     color: theme.colors.text,
+    textAlign: 'center',
   },
   messageContainer: {
     marginBottom: theme.spacing.m,
-    padding: theme.spacing.m - 4,
-    backgroundColor: theme.colors.background,
+    padding: theme.spacing.m,
     borderRadius: theme.borderRadius.medium,
+    borderBottomWidth: 3,
+    borderBottomColor: theme.colors.primary,
   },
   messageText: {
-    fontSize: theme.typography.fontSize.medium,
+    fontSize: theme.typography.fontSize.large,
+    fontWeight: theme.typography.fontWeight.medium,
     color: theme.colors.text,
-    lineHeight: 22,
+    lineHeight: 28,
+    textAlign: 'center',
   },
   listContainer: {
     maxHeight: 300,
@@ -65,12 +70,13 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.s,
   },
   itemContainer: {
-    padding: theme.spacing.m - 4,
-    backgroundColor: theme.colors.background,
+    padding: theme.spacing.m - 2,
     borderRadius: theme.borderRadius.medium,
+    backgroundColor: theme.colors.card,
     marginVertical: theme.spacing.xs,
     borderLeftWidth: 3,
-    borderLeftColor: theme.colors.info,
+    borderLeftColor: theme.colors.primary,
+    ...theme.shadows.small,
   },
   itemText: {
     fontSize: theme.typography.fontSize.regular,

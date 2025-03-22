@@ -5,10 +5,6 @@ import {UseSpeechRecognitionReturn} from '../types/app';
 
 const {SpeechToTextModule} = NativeModules;
 
-/**
- * Custom hook for speech recognition functionality
- * Handles permission requests, speech recognition state, and event listeners
- */
 export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
   const [isListening, setIsListening] = useState(false);
   const [partialText, setPartialText] = useState('');
@@ -17,23 +13,22 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
   const [speechToTextEmitter, setSpeechToTextEmitter] =
     useState<NativeEventEmitter | null>(null);
 
-  // Initialize the NativeEventEmitter safely
+  // Initialize NativeEventEmitter globally
   useEffect(() => {
-    if (SpeechToTextModule) {
-      const emitter = new NativeEventEmitter(SpeechToTextModule);
-      setSpeechToTextEmitter(emitter);
-    } else {
+    if (!SpeechToTextModule) {
       setError(
         'SpeechToTextModule native module not found. Ensure the module is linked correctly.',
       );
+      return;
     }
+    // Use global NativeEventEmitter since events are emitted via RCTDeviceEventEmitter
+    const emitter = new NativeEventEmitter();
+    setSpeechToTextEmitter(emitter);
   }, []);
 
-  // Use the microphone permission hook
   const {requestMicrophonePermission, permissionError} =
     useMicrophonePermission();
 
-  // Start speech recognition
   const startListening = async () => {
     if (!SpeechToTextModule) {
       setError('SpeechToTextModule native module not available');
@@ -60,7 +55,6 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     }
   };
 
-  // Stop speech recognition
   const stopListening = async () => {
     if (!SpeechToTextModule) {
       setError('SpeechToTextModule native module not available');
@@ -78,55 +72,35 @@ export const useSpeechRecognition = (): UseSpeechRecognitionReturn => {
     }
   };
 
-  // Set up event listeners for speech recognition
   useEffect(() => {
-    if (!speechToTextEmitter) {
-      return;
-    }
+    if (!speechToTextEmitter) return;
 
-    const onSpeechStart = speechToTextEmitter.addListener(
-      'onSpeechStart',
-      () => {
-        // Speech started event handler
-      },
-    );
-
-    const onSpeechPartialResults = speechToTextEmitter.addListener(
-      'onSpeechPartialResults',
-      (text: string) => {
-        setPartialText(text);
-      },
-    );
-
-    const onSpeechResults = speechToTextEmitter.addListener(
-      'onSpeechResults',
-      (text: string) => {
+    const listeners = [
+      speechToTextEmitter.addListener('onSpeechStart', () => {
+        setIsListening(true);
+      }),
+      speechToTextEmitter.addListener(
+        'onSpeechPartialResults',
+        (text: string) => {
+          setPartialText(text);
+        },
+      ),
+      speechToTextEmitter.addListener('onSpeechResults', (text: string) => {
         setFinalText(text);
-      },
-    );
-
-    const onSpeechEnd = speechToTextEmitter.addListener('onSpeechEnd', () => {
-      setIsListening(false);
-    });
-
-    const onSpeechError = speechToTextEmitter.addListener(
-      'onSpeechError',
-      (errorMsg: string) => {
+      }),
+      speechToTextEmitter.addListener('onSpeechEnd', () => {
+        setIsListening(false);
+      }),
+      speechToTextEmitter.addListener('onSpeechError', (errorMsg: string) => {
         setError('Speech recognition error: ' + errorMsg);
         setIsListening(false);
-      },
-    );
+      }),
+    ];
 
-    // Cleanup listeners on component unmount
     return () => {
-      onSpeechStart.remove();
-      onSpeechPartialResults.remove();
-      onSpeechResults.remove();
-      onSpeechEnd.remove();
-      onSpeechError.remove();
-      SpeechToTextModule?.destroy();
+      listeners.forEach(listener => listener.remove());
     };
-  }, [speechToTextEmitter, error]);
+  }, [speechToTextEmitter]);
 
   return {
     isListening,

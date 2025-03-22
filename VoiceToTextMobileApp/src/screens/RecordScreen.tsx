@@ -19,7 +19,11 @@ const RecordScreen = () => {
     stopListening,
   } = useSpeechRecognition();
 
-  const {sendText, loading, response} = useApiStore();
+  const {sendText, loading, response, error: apiError} = useApiStore();
+
+  // Extract error message from API response if it exists and success is false
+  const apiResponseError =
+    response && !response.success ? response.data.message : undefined;
 
   // Flag to track if we should process the final text
   const shouldProcessFinalText = useRef(true);
@@ -71,7 +75,7 @@ const RecordScreen = () => {
       <RecordingStatus
         isListening={isListening}
         displayText={displayText}
-        error={error}
+        error={error || apiResponseError || (apiError ?? undefined)}
       />
 
       <View style={styles.buttonContainer}>
@@ -91,11 +95,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: theme.colors.card,
-    paddingVertical: theme.spacing.xl + theme.spacing.s,
   },
   buttonContainer: {
-    marginBottom: theme.spacing.xl + theme.spacing.s,
     alignItems: 'center',
+    marginBottom: theme.spacing.xl + theme.spacing.s,
   },
 });
 

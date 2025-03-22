@@ -13,3 +13,9 @@ Each project has its own README with specific setup instructions.
 
 - [Backend Setup](/VoiceToTextBackend/README.md)
 - [Mobile App Setup](/VoiceToTextMobileApp/README.md)
+
+## Working Prototype
+
+View a demonstration of the application in action:
+
+<video src="screen_record.mp4" width="320" height="640" controls></video>

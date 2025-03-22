@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {RecordScreen, ResultsScreen} from '../screens';
 import {RootStackParamList} from '../types/app';
+import {theme} from '../styles/theme';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -14,7 +15,7 @@ export const Navigation = () => {
         initialRouteName="Record"
         screenOptions={{
           headerShown: false,
-          cardStyle: {backgroundColor: '#FFFFFF'},
+          cardStyle: {backgroundColor: theme.colors.background},
         }}>
         <Stack.Screen name="Record" component={RecordScreen} />
         <Stack.Screen name="Results" component={ResultsScreen} />

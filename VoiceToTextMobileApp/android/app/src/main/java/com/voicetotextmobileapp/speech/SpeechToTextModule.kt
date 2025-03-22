@@ -61,7 +61,7 @@ class SpeechToTextModule(reactContext: ReactApplicationContext) : ReactContextBa
 
             override fun onEndOfSpeech() {
                 Log.d(TAG, "onEndOfSpeech")
-                isListening = false // Ensure isListening is reset here
+                isListening = false
                 sendEvent("onSpeechEnd", null)
             }
 
@@ -78,7 +78,7 @@ class SpeechToTextModule(reactContext: ReactApplicationContext) : ReactContextBa
                     else -> "Unknown error: $error"
                 }
                 Log.d(TAG, "onError: $errorMessage")
-                isListening = false // Reset isListening on error
+                isListening = false
                 sendEvent("onSpeechError", errorMessage)
             }
 
@@ -86,7 +86,7 @@ class SpeechToTextModule(reactContext: ReactApplicationContext) : ReactContextBa
                 val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 matches?.firstOrNull()?.let { sendEvent("onSpeechResults", it) }
                 Log.d(TAG, "onResults: ${matches?.firstOrNull()}")
-                isListening = false // Reset isListening when results are received
+                isListening = false
             }
 
             override fun onPartialResults(partialResults: Bundle?) {

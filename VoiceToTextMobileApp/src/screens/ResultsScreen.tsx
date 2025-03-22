@@ -1,27 +1,42 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, BackHandler, Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useApiStore} from '../store';
 import {ApiSuccessResponse, ResultsScreenNavigationProp} from '../types/app';
 import {theme} from '../styles/theme';
-import {ScreenHeader} from '../components/Header';
 import {ApiResponseCard} from '../components/Card';
 import {ActionFooter} from '../components/Footer';
+import {GradientBackground} from '../components/Gradient/GradientBackground';
 
 const ResultsScreen = () => {
   const navigation = useNavigation<ResultsScreenNavigationProp>();
   const {response, resetResponse} = useApiStore();
 
-  const handleGoBack = () => {
+  const handleGoBack = React.useCallback(() => {
     resetResponse();
     navigation.navigate('Record');
-  };
+  }, [resetResponse, navigation]);
 
   React.useEffect(() => {
     if (!response) {
       navigation.replace('Record');
     }
   }, [response, navigation]);
+
+  // Handle Android hardware back button
+  React.useEffect(() => {
+    if (Platform.OS === 'android') {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        () => {
+          handleGoBack();
+          return true;
+        },
+      );
+
+      return () => backHandler.remove();
+    }
+  }, [handleGoBack]);
 
   if (!response || !response.success) {
     return null;
@@ -30,9 +45,7 @@ const ResultsScreen = () => {
   const successResponse = response as ApiSuccessResponse;
 
   return (
-    <View style={styles.container}>
-      <ScreenHeader title="Results" />
-
+    <GradientBackground variant="card" style={styles.container}>
       <View style={styles.contentContainer}>
         <ApiResponseCard response={successResponse} />
       </View>
@@ -45,13 +58,14 @@ const ResultsScreen = () => {
           },
         ]}
       />
-    </View>
+    </GradientBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: theme.spacing.l,
     backgroundColor: theme.colors.background,
   },
   contentContainer: {
