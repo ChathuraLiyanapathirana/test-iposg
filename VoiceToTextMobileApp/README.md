@@ -13,6 +13,18 @@ This app allows users to record their voice and convert it to text using device-
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+## Major Dependencies
+
+**React Navigation (@react-navigation/native, @react-navigation/stack)**
+- Purpose: Handles navigation and routing between screens in the mobile app
+- Provides a way to transition between screens and manage navigation history
+- Implements stack-based navigation with animated transitions
+
+**Zustand**
+- Purpose: State management library
+- Provides a simple and lightweight way to manage application state
+- Allows for creating global stores that components can access without prop drilling
+
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
