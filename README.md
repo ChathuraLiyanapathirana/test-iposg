@@ -1,6 +1,7 @@
 # Voice to Text Project
 
 This repository contains both the backend and mobile application components for the Voice to Text project.
+Based on this requirement i have released a new library to the npm registry : [npm library link](https://www.npmjs.com/package/@appcitor/react-native-voice-to-text)
 
 ## Repository Structure
 
